@@ -9,18 +9,10 @@
 class Tree
 {
     public:
-        Tree();
-        virtual ~Tree();
-        Tree(int number)
-        {
-            root=new Node{number};
-            NYT=root;
-            current=nullptr;
-            maxNode=nullptr;
-            pathFinder="";
-            nytPath="";
-        };
-
+        Tree() = default;
+        ~Tree();
+        Tree(int number);
+        Tree& operator=(const Tree *tree);
         bool isNYT(Node *node);
         bool isExternalNode(Node *node);
         bool updateTree(char mark);
@@ -31,12 +23,9 @@ class Tree
         std::string getNytPath();
         std::string getPath();
 
-    protected:
     private:
-        void addNode(char mark);
         void addNode(char mark,Node *nyt);
         bool findMark(char mark, Node *tmpRoot);
-        void printTO();
         void switchNodes(Node *,Node *);
         void inorder(Node *root);
         void maxNodeInBlock(Node * tmoRoot,int weight,int number);
@@ -46,15 +35,13 @@ class Tree
         void releseTree(Node *root);
         std::string findMe(char mark);
         std::string findNyt();
+
         std::string nytPath;
         std::string pathFinder;
         Node *root;
         Node *NYT;
         Node *current;
         Node *maxNode;
-        Node *addNode(char mark,Node *tmp,Node *nyt);
-        Node* findMaxInBlock(Node *,Node *,int);
-        Node* findNode();
 };
 
 #endif // TREE_H

@@ -1,21 +1,16 @@
 #include "../include/Transmiter.h"
 
-Transmiter::Transmiter()
-{
-    //ctor
-}
-Transmiter::Transmiter(int nodeCount,int e,int r,Tree &huffmanTree)
+Transmiter::Transmiter(int nodeCount,int e,int r,Tree &huffmanTree) : huffmanTree(huffmanTree) 
 {
     this->nodeCount=nodeCount;
     this->e=e;
     this->r=r;
-    this->huffmanTree=huffmanTree;
 }
+
 void Transmiter::encode(std::string filePath)
 {
     std::ifstream f(filePath, std::ios::binary | std::ios::in);
     char c;
-    std::string NYT="";
     while (f.get(c))
     {
         if(huffmanTree.updateTree(c))

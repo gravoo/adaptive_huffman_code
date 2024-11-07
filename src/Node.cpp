@@ -1,9 +1,16 @@
-#include "../include/Node.h"
+#include "Node.h"
+#include <utility>
+Node::Node(char mark,int weight,int number,Node *parent):
+	mark(mark),weight(weight),number(number),
+	left(nullptr),right(nullptr),parent(parent){};
 
-Node::Node()
-{}
-Node::~Node()
-{}
+Node::Node(int number):
+	weight(0),number(number),mark(0),left(nullptr),
+	right(nullptr),parent(nullptr){};
+
+Node::Node(int number,Node *parent):weight(0),number(number),
+		mark(0),left(nullptr),right(nullptr),parent(parent){};
+
 char Node :: getMark()
 {
 	return this->mark;

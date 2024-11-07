@@ -1,7 +1,22 @@
 #include "Tree.h"
 
-Tree::Tree()
-{}
+Tree::Tree(int number)
+{
+    root=new Node{number};
+    NYT=root;
+    current=nullptr;
+    maxNode=nullptr;
+    pathFinder="";
+    nytPath="";
+};
+// Tree::Tree(const Tree& tree)
+// {
+ 
+// }
+// Tree& Tree::operator=(const Tree *tree)
+// {
+//     return *this;
+// }
 Tree::~Tree()
 {
    //releseTree(root);
@@ -44,15 +59,13 @@ void Tree::swapNodes(Node *current,Node *maxNode)
 			switchNodes(current,maxNode);
 		}
 }
-bool Tree :: updateTree(char mark)
+bool Tree::updateTree(char mark)
 {
     bool flag;
-
 
 	findMe(mark);
 	if(current)
 	{
-
 		maxNodeInBlock(root,current->getWeight(),current->getNumber());
         swapNodes(current,maxNode);
         current->incWeight();
@@ -74,8 +87,6 @@ bool Tree :: updateTree(char mark)
         swapNodes(current,maxNode);
         maxNode->incWeight();
     }
-    //inorder(root);
-	//std::cout<<std::endl;
 	current=nullptr;
 	maxNode=nullptr;
 	return flag;

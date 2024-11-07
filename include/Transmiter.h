@@ -8,7 +8,7 @@
 class Transmiter
 {
     public:
-        Transmiter();
+        Transmiter() = delete;
         Transmiter(int nodeCount,int e,int r,Tree &huffmanTree);
         virtual ~Transmiter();
         void encode(std::string filePath);
