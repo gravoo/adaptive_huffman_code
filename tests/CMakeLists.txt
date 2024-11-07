@@ -1,0 +1,7 @@
+add_executable(Tests BasicTest.cpp)
+add_executable(NodeTests NodeTests.cpp ${CMAKE_SOURCE_DIR}/src/Node.cpp)
+target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(NodeTests PRIVATE Catch2::Catch2WithMain)
+target_include_directories(NodeTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
+catch_discover_tests(Tests)
+catch_discover_tests(NodeTests)

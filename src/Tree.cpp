@@ -1,4 +1,4 @@
-#include "../include/Tree.h"
+#include "Tree.h"
 
 Tree::Tree()
 {}
