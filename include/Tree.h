@@ -12,6 +12,7 @@ class Tree
         Tree() = default;
         ~Tree();
         Tree(int number);
+        Tree(const Tree&);
         Tree& operator=(const Tree *tree);
         bool isNYT(Node *node);
         bool isExternalNode(Node *node);
@@ -33,6 +34,7 @@ class Tree
         bool findPath(Node *,std::string,std::string ,std::string);
         void findPath(Node*);
         void releseTree(Node *root);
+        void traverseTree(Node *ptr, Node *current);
         std::string findMe(char mark);
         std::string findNyt();
 

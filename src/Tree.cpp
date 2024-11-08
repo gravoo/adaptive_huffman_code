@@ -9,17 +9,39 @@ Tree::Tree(int number)
     pathFinder="";
     nytPath="";
 };
-// Tree::Tree(const Tree& tree)
-// {
- 
-// }
-// Tree& Tree::operator=(const Tree *tree)
-// {
-//     return *this;
-// }
+
+Tree::Tree(const Tree& tree)
+{
+    root = new Node{tree.root->getMark(), tree.root->getWeight(), tree.root->getNumber(), nullptr};
+    NYT = root;
+    pathFinder = tree.pathFinder;
+    nytPath = tree.nytPath;
+    traverseTree(tree.root, root);
+}
+
+void Tree::traverseTree(Node *ptr, Node *current)
+{
+    if(ptr)
+    {
+        if(ptr->left)
+        {
+            current->left = new Node{ptr->left->getMark(), ptr->left->getWeight(), ptr->left->getNumber(), current};
+            NYT=current;
+            traverseTree(ptr->left, current->left);
+        }
+        if(ptr->right)
+        {
+            current->right = new Node{ptr->right->getMark(), ptr->right->getWeight(), ptr->right->getNumber(), current};
+            traverseTree(ptr->right, current->right);
+        }
+    }
+}
+
 Tree::~Tree()
 {
-   //releseTree(root);
+    auto root = getRoot();
+    auto ptr = root;
+    delete ptr;
 }
 void Tree::releseTree(Node *root)
 {
@@ -70,7 +92,6 @@ bool Tree::updateTree(char mark)
         swapNodes(current,maxNode);
         current->incWeight();
         flag=false;
-
 	}
 	else
 	{
