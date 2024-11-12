@@ -13,6 +13,8 @@ Tree::Tree(int number)
 Tree::Tree(const Tree& tree)
 {
     root = new Node{tree.root->getMark(), tree.root->getWeight(), tree.root->getNumber(), nullptr};
+    current = nullptr;
+    maxNode = nullptr;
     NYT = root;
     pathFinder = tree.pathFinder;
     nytPath = tree.nytPath;
@@ -111,7 +113,6 @@ bool Tree::updateTree(char mark)
 	current=nullptr;
 	maxNode=nullptr;
 	return flag;
-
 }
 Node* Tree::getRoot()
 {
@@ -229,7 +230,7 @@ Node *Tree::getRight(Node *node)
 {
     return node->right;
 }
-std::string  Tree:: getNytPath()
+std::string Tree::getNytPath()
 {
     return this->nytPath;
 }

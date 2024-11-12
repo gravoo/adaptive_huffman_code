@@ -7,22 +7,25 @@ Transmiter::Transmiter(int nodeCount,int e,int r,Tree &huffmanTree) : huffmanTre
     this->r=r;
 }
 
-void Transmiter::encode(std::string filePath)
+std::string Transmiter::encode(std::string filePath)
 {
     std::ifstream f(filePath, std::ios::binary | std::ios::in);
+    std::string result;
     char c;
     while (f.get(c))
     {
         if(huffmanTree.updateTree(c))
         {
-            std::cout<<huffmanTree.getNytPath();
-            toBits(c);
+            result+=huffmanTree.getNytPath();
+            result+=toBits(c);
         }
         else
-            std::cout<<huffmanTree.getPath();
+        {
+            result+=huffmanTree.getPath();
+        }
     }
 	f.close();
-
+    return result;
 }
 void Transmiter::decode(std::string filePath)
 {
@@ -66,10 +69,14 @@ void Transmiter::decode(std::string filePath)
 	f.close();
 
 }
-void Transmiter::toBits(char c)
+std::string Transmiter::toBits(char c)
 {
-	 for (int i = 7; i >= 0; i--)
-        	std::cout<<((c >> i) & 1);
+    std::string result;
+    for (int i = 7; i >= 0; i--)
+    {
+        result+=std::to_string((c >> i) & 1);
+    }
+    return result;
 }
 Node *Transmiter::getNode(Node *pointer,char c)
 {
@@ -85,7 +92,9 @@ Node *Transmiter::upTree(int &i,std::string &bits,char c)
 {
     i=0;
     if(!(bits==""))
+    {   
         c=toChar(bits);
+    } 
     std::cout<<c;
     huffmanTree.updateTree(c);
     bits="";

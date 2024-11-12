@@ -16,7 +16,6 @@ class Node
 
         void setMark(char);
         void setNumber(int);
-        void setWeight(int);
         void nodeSwaper(Node *,Node *);
         void incWeight();
         Node *getParent();

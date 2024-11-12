@@ -31,10 +31,6 @@ void Node :: setNumber(int number)
 {
 	this->number=number;
 }
-void  Node :: setWeight(int weight)
-{
-	this->weight=weight;
-}
 void Node :: incWeight()
 {
 	this->weight=this->weight+1;

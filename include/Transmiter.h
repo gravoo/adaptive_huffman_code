@@ -11,14 +11,12 @@ class Transmiter
         Transmiter() = delete;
         Transmiter(int nodeCount,int e,int r,Tree &huffmanTree);
         virtual ~Transmiter();
-        void encode(std::string filePath);
+        std::string encode(std::string filePath);
         void decode(std::string filePath);
     protected:
     private:
         void getCharacter();
-        void decodeChar(Node *pointer,char c);
-        void toBits(char c);
-        Node *updateTree(char c);
+        std::string toBits(char c);
         Node *getNode(Node *,char);
         Node *upTree(int &,std::string &,char);
         char toChar(std::string bits);

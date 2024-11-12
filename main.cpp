@@ -23,8 +23,8 @@ int main(int argc, char **argv)
         int e=7,r=0;
         Tree encodeTree{nodeCount};
         Transmiter encoder{nodeCount,e,r,encodeTree};
-        encoder.encode(cmdl({"e"}).str());
-
+        auto result = encoder.encode(cmdl({"e"}).str());
+        std::cout<<result<<std::endl;
     }
     else if(cmdl({"d"}))
     {
