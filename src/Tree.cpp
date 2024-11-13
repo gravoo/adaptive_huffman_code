@@ -70,28 +70,27 @@ void Tree::releseTree(Node *&ptr)
 }
 void Tree::addNode(char mark,Node *nyt)
 {
-	nyt->left=new Node{nyt->getNumber()-2,nyt};
+    nyt->left=new Node{nyt->getNumber()-2,nyt};
     nyt->right=new Node{mark,1,nyt->getNumber()-1,nyt};
     nyt->left->left = nullptr;
     nyt->left->right = nullptr;
     nyt->right->left = nullptr;
     nyt->right->right = nullptr;
-	nyt->incWeight();
-	NYT=nyt->left;
+    nyt->incWeight();
+    NYT=nyt->left;
 }
 void Tree :: maxNodeInBlock(Node * tmoRoot,int weight,int number)
 {
-	if(tmoRoot)
-	{
-		if(tmoRoot->getWeight()==weight&&tmoRoot->getNumber()>number)
-		{
-			maxNode=tmoRoot;
-			number=tmoRoot->getNumber();
-		}
-		maxNodeInBlock(tmoRoot->left,weight,number);
-		maxNodeInBlock(tmoRoot->right,weight,number);
-
-	}
+    if(tmoRoot)
+    {
+        if(tmoRoot->getWeight()==weight&&tmoRoot->getNumber()>number)
+        {
+            maxNode=tmoRoot;
+            number=tmoRoot->getNumber();
+        }
+        maxNodeInBlock(tmoRoot->left,weight,number);
+        maxNodeInBlock(tmoRoot->right,weight,number);
+    }
 }
 void Tree::swapNodes(Node *current,Node *maxNode)
 {
@@ -104,21 +103,21 @@ bool Tree::updateTree(char mark)
 {
     bool flag;
 
-	findMe(mark);
-	if(current)
-	{
-		maxNodeInBlock(root,current->getWeight(),current->getNumber());
+    findMe(mark);
+    if(current)
+    {
+        maxNodeInBlock(root,current->getWeight(),current->getNumber());
         swapNodes(current,maxNode);
         current->incWeight();
         flag=false;
-	}
-	else
-	{
+    }
+    else
+    {
         findNyt();
-		addNode(mark,NYT);
-		current=NYT->parent;
-		flag=true;
-	}
+        addNode(mark,NYT);
+        current=NYT->parent;
+        flag=true;
+    }
     while(current!=root)
     {
         current=current->parent;
@@ -127,9 +126,9 @@ bool Tree::updateTree(char mark)
         swapNodes(current,maxNode);
         maxNode->incWeight();
     }
-	current=nullptr;
-	maxNode=nullptr;
-	return flag;
+    current=nullptr;
+    maxNode=nullptr;
+    return flag;
 }
 Node* Tree::getRoot()
 {
@@ -137,35 +136,33 @@ Node* Tree::getRoot()
 }
 void Tree :: switchNodes(Node *lowerNode,Node *higherNode)
 {
-	if(lowerNode==higherNode)
+    if(lowerNode==higherNode)
     {
         return ;
     }
-
     lowerNode->nodeSwaper(lowerNode,higherNode);
-
 }
 bool Tree ::findMark(char mark,Node *tmpRoot)
 {
-	if(tmpRoot)
+    if(tmpRoot)
     {
-		if(tmpRoot->getMark()==mark)
+        if(tmpRoot->getMark()==mark)
         {
             current=tmpRoot;
             return true;
         }
 
-		if(findMark(mark,tmpRoot->left))
+        if(findMark(mark,tmpRoot->left))
         {
             return true;
         }
-		if(findMark(mark,tmpRoot->right))
+        if(findMark(mark,tmpRoot->right))
         {
-             return true;
+            return true;
         }
-	}
+    }
 
-	return false;
+    return false;
 }
 std::string Tree::findMe(char mark)
 {
