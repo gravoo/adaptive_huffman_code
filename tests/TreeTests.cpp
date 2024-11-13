@@ -50,4 +50,6 @@ TEST_CASE("Tree Test Updating") {
 TEST_CASE("Delete Tree") {
     auto rootId{12345};
     Tree sut{rootId};
+    sut.updateTree('v');
+    sut.updateTree('a');
 }

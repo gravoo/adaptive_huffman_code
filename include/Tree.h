@@ -3,9 +3,6 @@
 #include "Node.h"
 #include <iostream>
 #include <string>
-#include <cstring>
-#include <algorithm>
-#include <iterator>
 class Tree
 {
     public:
@@ -13,7 +10,6 @@ class Tree
         ~Tree();
         Tree(int number);
         Tree(const Tree&);
-        Tree& operator=(const Tree *tree);
         bool isNYT(Node *node);
         bool isExternalNode(Node *node);
         bool updateTree(char mark);
@@ -33,7 +29,7 @@ class Tree
         void swapNodes(Node *current,Node *maxNode);
         bool findPath(Node *,std::string,std::string ,std::string);
         void findPath(Node*);
-        void releseTree(Node *root);
+        void releseTree(Node *&ptr);
         void traverseTree(Node *ptr, Node *current);
         std::string findMe(char mark);
         std::string findNyt();
