@@ -18,24 +18,25 @@ class Tree
         Node* getLeft(Node *);
         Node* getRight(Node *);
         std::string getNytPath();
-        std::string getPathToMark();
-
+        std::string getPathToLastAddedMark();
+        Node *findChar(char);
+        std::string buildPath(char mark);
     private:
-        void addNode(char mark,Node *nyt);
-        bool findMark(char mark, Node *tmpRoot);
+        void addNode(char mark,Node *);
         void switchNodes(Node *,Node *);
-        void inorder(Node *root);
         void maxNodeInBlock(Node * tmoRoot,int weight,int number);
-        void swapNodes(Node *current,Node *maxNode);
-        bool findPath(Node *,std::string,std::string ,std::string);
+        void swapNodes(Node *,Node *);
         void findPath(Node*);
         void releseTree(Node *&ptr);
-        void traverseTree(Node *ptr, Node *current);
-        std::string findPathToMark(char mark);
+        void copyAndAllocateNewNodes(Node *ptr, Node *current);
+        void balanceTree(Node *ptr, Node *root);
+        void buildPath(Node *ptr,char mark, std::string, std::string&);
+        Node *findChar(Node *, char);
         std::string findNyt();
+        
 
         std::string nytPath;
-        std::string pathToMark;
+        std::string pathToLastAddedMark;
         Node *root{nullptr};
         Node *NYT{nullptr};
         Node *current{nullptr};

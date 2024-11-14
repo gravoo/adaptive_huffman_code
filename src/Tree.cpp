@@ -10,11 +10,11 @@ Tree::Tree(const Tree& tree)
 {
     root = new Node{tree.root->getMark(), tree.root->getWeight(), tree.root->getNumber(), nullptr};
     NYT = root;
-    pathToMark = tree.pathToMark;
+    pathToLastAddedMark = tree.pathToLastAddedMark;
     nytPath = tree.nytPath;
-    traverseTree(tree.root, root);
+    copyAndAllocateNewNodes(tree.root, root);
 }
-void Tree::traverseTree(Node *ptr, Node *current)
+void Tree::copyAndAllocateNewNodes(Node *ptr, Node *current)
 {
     if(ptr)
     {
@@ -22,12 +22,12 @@ void Tree::traverseTree(Node *ptr, Node *current)
         {
             current->left = new Node{ptr->left->getMark(), ptr->left->getWeight(), ptr->left->getNumber(), current};
             NYT=current;
-            traverseTree(ptr->left, current->left);
+            copyAndAllocateNewNodes(ptr->left, current->left);
         }
         if(ptr->right)
         {
             current->right = new Node{ptr->right->getMark(), ptr->right->getWeight(), ptr->right->getNumber(), current};
-            traverseTree(ptr->right, current->right);
+            copyAndAllocateNewNodes(ptr->right, current->right);
         }
     }
 }
@@ -55,24 +55,24 @@ void Tree::releseTree(Node *&ptr)
         ptr = nullptr;
     }
 }
-void Tree::addNode(char mark,Node *nyt)
+void Tree::addNode(char mark,Node *ptr)
 {
-    nyt->left=new Node{nyt->getNumber()-2,nyt};
-    nyt->right=new Node{mark,1,nyt->getNumber()-1,nyt};
-    nyt->incWeight();
-    NYT=nyt->left;
+    ptr->left=new Node{ptr->getNumber()-2, ptr};
+    ptr->right=new Node{mark,1,ptr->getNumber()-1, ptr};
+    ptr->incWeight();
+    NYT=ptr->left;
 }
-void Tree::maxNodeInBlock(Node * tmoRoot,int weight,int number)
+void Tree::maxNodeInBlock(Node * ptr,int weight,int number)
 {
-    if(tmoRoot)
+    if(ptr)
     {
-        if(tmoRoot->getWeight()==weight&&tmoRoot->getNumber()>number)
+        if((ptr->getWeight()==weight)&&(ptr->getNumber()>number))
         {
-            maxNode=tmoRoot;
-            number=tmoRoot->getNumber();
+            maxNode=ptr;
+            number=ptr->getNumber();
         }
-        maxNodeInBlock(tmoRoot->left,weight,number);
-        maxNodeInBlock(tmoRoot->right,weight,number);
+        maxNodeInBlock(ptr->left,weight,number);
+        maxNodeInBlock(ptr->right,weight,number);
     }
 }
 void Tree::swapNodes(Node *current,Node *maxNode)
@@ -84,34 +84,38 @@ void Tree::swapNodes(Node *current,Node *maxNode)
 }
 bool Tree::updateTree(char mark)
 {
-    bool flag;
-
-    pathToMark = findPathToMark(mark);
-    if(current)
+    bool charAdded{false};
+    pathToLastAddedMark = buildPath(mark);
+    auto ptr = findChar(mark);
+    if(ptr)
     {
-        maxNodeInBlock(root,current->getWeight(),current->getNumber());
-        swapNodes(current,maxNode);
-        current->incWeight();
-        flag=false;
+        maxNodeInBlock(root,ptr->getWeight(),ptr->getNumber());
+        swapNodes(ptr,maxNode);
+        ptr->incWeight();
+        charAdded=false;
     }
     else
     {
         findNyt();
         addNode(mark,NYT);
-        current=NYT->parent;
-        flag=true;
+        ptr=NYT->parent;
+        charAdded=true;
     }
-    while(current!=root)
-    {
-        current=current->parent;
-        maxNode=current;
-        maxNodeInBlock(root,current->getWeight(),current->getNumber());
-        swapNodes(current,maxNode);
-        maxNode->incWeight();
-    }
+    balanceTree(ptr, root);
     current=nullptr;
     maxNode=nullptr;
-    return flag;
+    return charAdded;
+}
+void Tree::balanceTree(Node *ptr, Node *root)
+{
+    while(ptr!=root)
+    {
+        ptr=ptr->parent;
+        maxNode=ptr;
+        maxNodeInBlock(root,ptr->getWeight(),ptr->getNumber());
+        swapNodes(ptr,maxNode);
+        maxNode->incWeight();
+    } 
 }
 Node* Tree::getRoot()
 {
@@ -125,34 +129,6 @@ void Tree::switchNodes(Node *lowerNode,Node *higherNode)
     }
     std::swap(lowerNode,higherNode);
 }
-bool Tree::findMark(char mark,Node *tmpRoot)
-{
-    if(tmpRoot)
-    {
-        if(tmpRoot->getMark()==mark)
-        {
-            current=tmpRoot;
-            return true;
-        }
-
-        if(findMark(mark,tmpRoot->left))
-        {
-            return true;
-        }
-        if(findMark(mark,tmpRoot->right))
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-std::string Tree::findPathToMark(char mark)
-{
-    pathToMark="";
-    findPath(root,std::string(1,mark),"","");
-    return pathToMark;
-}
 std::string Tree::findNyt()
 {
     nytPath="";
@@ -160,33 +136,25 @@ std::string Tree::findNyt()
     std::reverse(std::begin(nytPath),std::end(nytPath));
     return nytPath;
 }
-bool Tree::findPath(Node *root,std::string mark,std::string path,std::string side)
+std::string Tree::buildPath(char mark)
 {
-    if(root)
+    std::string path, resoult;
+    buildPath(getRoot(), mark, path, resoult);
+    return resoult;
+}
+void Tree::buildPath(Node *ptr,char mark, std::string path, std::string &resoult)
+{
+    if(ptr == nullptr)
     {
-        path+=side;
-        if(!mark.compare(std::string(1,root->getMark())))
-        {
-            pathToMark=path;
-            current=root;
-            return true;
-        }
-        if(findPath(root->left,mark,path,"0"))
-        {
-            return true;
-        }
-
-        if(findPath(root->right,mark,path,"1"))
-        {
-            return true;
-        }
-
+        return;
     }
-    if(path.size())
+    if(ptr->getMark() == mark)
     {
-        path.resize(path.size()-1);
+        resoult = path;
+        return;
     }
-    return false;
+    buildPath(ptr->left, mark, path + "0", resoult);
+    buildPath(ptr->right, mark, path + "1", resoult);
 }
 void Tree::findPath(Node *nyt)
 {
@@ -204,26 +172,15 @@ void Tree::findPath(Node *nyt)
         findPath(nyt->parent);
     }
 }
-void Tree::inorder(Node *root)
+
+std::string Tree::getPathToLastAddedMark()
 {
-    if(root)
-    {
-        std::cout<<root->getMark()<<" "<<root->getWeight();
-        std::cout<<"(";
-        inorder(root->left);
-        std::cout<<")";
-        std::cout<<"(";
-        inorder(root->right);
-        std::cout<<")";
-    }
+    return pathToLastAddedMark;
 }
-std::string Tree::getPathToMark()
-{
-    return this->pathToMark;
-}
+
 std::string Tree::getNytPath()
 {
-    return this->nytPath;
+    return nytPath;
 }
 bool Tree::isExternalNode(Node *node)
 {
@@ -248,4 +205,30 @@ Node *Tree::getLeft(Node *node)
 Node *Tree::getRight(Node *node)
 {
     return node->right;
+}
+Node *Tree::findChar(char mark)
+{
+    auto root = getRoot();
+    if(root == nullptr)
+    {
+        return nullptr;
+    }
+    return findChar(root, mark);
+}
+Node *Tree::findChar(Node *ptr, char mark)
+{
+    if(ptr == nullptr)
+    {
+        return nullptr;
+    }
+    if(ptr->getMark() == mark)
+    {
+        return ptr;
+    }
+    auto leftResoult = findChar(ptr->left, mark);
+    if(findChar(ptr->left, mark) != nullptr)
+    {
+            return leftResoult;
+    }
+    return findChar(ptr->right, mark);
 }
