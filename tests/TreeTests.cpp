@@ -25,31 +25,42 @@ TEST_CASE("Tree Test Updating") {
     Tree sut{rootId};
 
     REQUIRE(sut.getNytPath() == std::string(""));
-    REQUIRE(sut.getPath() == std::string(""));
+    REQUIRE(sut.getPathToMark() == std::string(""));
 
     REQUIRE(sut.updateTree('a') == true);
     REQUIRE(sut.getNytPath() == std::string(""));
-    REQUIRE(sut.getPath() == std::string(""));
+    REQUIRE(sut.getPathToMark() == std::string(""));
     
     REQUIRE(sut.updateTree('a') == false);
     REQUIRE(sut.getNytPath() == std::string(""));
-    REQUIRE(sut.getPath() == std::string("1"));
+    REQUIRE(sut.getPathToMark() == std::string("1"));
 
     REQUIRE(sut.updateTree('r') == true);
     REQUIRE(sut.getNytPath() == std::string("0"));
-    REQUIRE(sut.getPath() == std::string(""));
+    REQUIRE(sut.getPathToMark() == std::string(""));
 
     REQUIRE(sut.updateTree('d') == true);
     REQUIRE(sut.getNytPath() == std::string("00"));
-    REQUIRE(sut.getPath() == std::string(""));
+    REQUIRE(sut.getPathToMark() == std::string(""));
 
     REQUIRE(sut.updateTree('v') == true);
     REQUIRE(sut.getNytPath() == std::string("000"));
-    REQUIRE(sut.getPath() == std::string(""));
+    REQUIRE(sut.getPathToMark() == std::string(""));
 }
 TEST_CASE("Delete Tree") {
     auto rootId{12345};
     Tree sut{rootId};
     sut.updateTree('v');
     sut.updateTree('a');
+}
+TEST_CASE("Tree Test Nyt Path") {
+    auto rootId{12345};
+    Tree sut{rootId};
+
+    REQUIRE(sut.getNytPath() == std::string(""));
+    REQUIRE(sut.getPathToMark() == std::string(""));
+
+    REQUIRE(sut.updateTree('a') == true);
+    REQUIRE(sut.getPathToMark() == std::string(""));
+    REQUIRE(sut.getNytPath() == std::string(""));
 }

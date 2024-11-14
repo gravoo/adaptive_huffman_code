@@ -18,7 +18,7 @@ class Tree
         Node* getLeft(Node *);
         Node* getRight(Node *);
         std::string getNytPath();
-        std::string getPath();
+        std::string getPathToMark();
 
     private:
         void addNode(char mark,Node *nyt);
@@ -31,15 +31,15 @@ class Tree
         void findPath(Node*);
         void releseTree(Node *&ptr);
         void traverseTree(Node *ptr, Node *current);
-        std::string findMe(char mark);
+        std::string findPathToMark(char mark);
         std::string findNyt();
 
         std::string nytPath;
-        std::string pathFinder;
-        Node *root;
-        Node *NYT;
-        Node *current;
-        Node *maxNode;
+        std::string pathToMark;
+        Node *root{nullptr};
+        Node *NYT{nullptr};
+        Node *current{nullptr};
+        Node *maxNode{nullptr};
 };
 
 #endif // TREE_H

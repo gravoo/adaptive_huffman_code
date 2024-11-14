@@ -1,46 +1,30 @@
 #include "Node.h"
 #include <utility>
 Node::Node(char mark,int weight,int number,Node *parent):
-	mark(mark),weight(weight),number(number),
-	left(nullptr),right(nullptr),parent(parent){};
+	mark(mark),weight(weight),number(number),parent(parent){};
 
 Node::Node(int number):
-	weight(0),number(number),mark(0),left(nullptr),
-	right(nullptr),parent(nullptr){};
+	number(number){};
 
-Node::Node(int number,Node *parent):weight(0),number(number),
-		mark(0),left(nullptr),right(nullptr),parent(parent){};
+Node::Node(int number,Node *parent):weight(0),number(number),parent(parent){};
 
-char Node :: getMark()
+char Node::getMark()
 {
-	return this->mark;
+	return mark;
 }
-int Node :: getWeight()
+int Node::getWeight()
 {
-	return this->weight;
+	return weight;
 }
-int Node :: getNumber()
+int Node::getNumber()
 {
-	return this->number;
+	return number;
 }
-void Node :: setMark(char mark)
+void Node::incWeight()
 {
-	this->mark=mark;
+	weight++;
 }
-void Node :: setNumber(int number)
+Node *Node::getParent()
 {
-	this->number=number;
-}
-void Node :: incWeight()
-{
-	this->weight=this->weight+1;
-}
-Node * Node :: getParent()
-{
-	return this->parent;
-}
-void Node::nodeSwaper(Node *A,Node *B)
-{
-    std::swap(A,B);
-
+	return parent;
 }

@@ -21,7 +21,7 @@ std::string Transmiter::encode(std::string filePath)
         }
         else
         {
-            result+=huffmanTree.getPath();
+            result+=huffmanTree.getPathToMark();
         }
     }
 	f.close();

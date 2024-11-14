@@ -3,9 +3,10 @@
 - [x] Introduce library for args reading
 - [x] Introduce library for unit tests
 - [x] Fix for copy constructor
-- [ ] Add veryfication tests fro encoding/decoding
-- [ ] Fix for Tree destructor
+- [x] Add veryfication tests fro encoding/decoding
+- [x] Fix for Tree destructor
+- [ ] Refactor
+- [ ] Check if encoding/decoding actually works properly
 - [ ] Extend README with explanation how coding works
 - [ ] Introduce system tests
-- [ ] Refactor
 - [ ] Update README.md

@@ -4,23 +4,13 @@
 Tree::Tree(int number)
 {
     root=new Node{number};
-    root->left = nullptr;
-    root->right = nullptr;
     NYT=root;
-    current=nullptr;
-    maxNode=nullptr;
-    pathFinder="";
-    nytPath="";
 };
 Tree::Tree(const Tree& tree)
 {
     root = new Node{tree.root->getMark(), tree.root->getWeight(), tree.root->getNumber(), nullptr};
-    root->left = nullptr;
-    root->right = nullptr;
-    current = nullptr;
-    maxNode = nullptr;
     NYT = root;
-    pathFinder = tree.pathFinder;
+    pathToMark = tree.pathToMark;
     nytPath = tree.nytPath;
     traverseTree(tree.root, root);
 }
@@ -31,16 +21,12 @@ void Tree::traverseTree(Node *ptr, Node *current)
         if(ptr->left)
         {
             current->left = new Node{ptr->left->getMark(), ptr->left->getWeight(), ptr->left->getNumber(), current};
-            current->left->left = nullptr;
-            current->left->right = nullptr;
             NYT=current;
             traverseTree(ptr->left, current->left);
         }
         if(ptr->right)
         {
             current->right = new Node{ptr->right->getMark(), ptr->right->getWeight(), ptr->right->getNumber(), current};
-            current->right->left = nullptr;
-            current->right->right = nullptr;
             traverseTree(ptr->right, current->right);
         }
     }
@@ -52,7 +38,8 @@ Tree::~Tree()
 }
 void Tree::releseTree(Node *&ptr)
 {
-    if (ptr == nullptr) {
+    if (ptr == nullptr) 
+    {
         return;
     }
     if(ptr->left == nullptr and ptr->right == nullptr)
@@ -72,14 +59,10 @@ void Tree::addNode(char mark,Node *nyt)
 {
     nyt->left=new Node{nyt->getNumber()-2,nyt};
     nyt->right=new Node{mark,1,nyt->getNumber()-1,nyt};
-    nyt->left->left = nullptr;
-    nyt->left->right = nullptr;
-    nyt->right->left = nullptr;
-    nyt->right->right = nullptr;
     nyt->incWeight();
     NYT=nyt->left;
 }
-void Tree :: maxNodeInBlock(Node * tmoRoot,int weight,int number)
+void Tree::maxNodeInBlock(Node * tmoRoot,int weight,int number)
 {
     if(tmoRoot)
     {
@@ -103,7 +86,7 @@ bool Tree::updateTree(char mark)
 {
     bool flag;
 
-    findMe(mark);
+    pathToMark = findPathToMark(mark);
     if(current)
     {
         maxNodeInBlock(root,current->getWeight(),current->getNumber());
@@ -134,15 +117,15 @@ Node* Tree::getRoot()
 {
     return root;
 }
-void Tree :: switchNodes(Node *lowerNode,Node *higherNode)
+void Tree::switchNodes(Node *lowerNode,Node *higherNode)
 {
     if(lowerNode==higherNode)
     {
         return ;
     }
-    lowerNode->nodeSwaper(lowerNode,higherNode);
+    std::swap(lowerNode,higherNode);
 }
-bool Tree ::findMark(char mark,Node *tmpRoot)
+bool Tree::findMark(char mark,Node *tmpRoot)
 {
     if(tmpRoot)
     {
@@ -164,11 +147,11 @@ bool Tree ::findMark(char mark,Node *tmpRoot)
 
     return false;
 }
-std::string Tree::findMe(char mark)
+std::string Tree::findPathToMark(char mark)
 {
-    pathFinder="";
+    pathToMark="";
     findPath(root,std::string(1,mark),"","");
-    return pathFinder;
+    return pathToMark;
 }
 std::string Tree::findNyt()
 {
@@ -184,7 +167,7 @@ bool Tree::findPath(Node *root,std::string mark,std::string path,std::string sid
         path+=side;
         if(!mark.compare(std::string(1,root->getMark())))
         {
-            pathFinder=path;
+            pathToMark=path;
             current=root;
             return true;
         }
@@ -212,7 +195,6 @@ void Tree::findPath(Node *nyt)
         if(nyt->parent->left==nyt)
         {
             nytPath+="0";
-
         }
         else
         {
@@ -235,9 +217,13 @@ void Tree::inorder(Node *root)
         std::cout<<")";
     }
 }
-std::string Tree::getPath()
+std::string Tree::getPathToMark()
 {
-    return this->pathFinder;
+    return this->pathToMark;
+}
+std::string Tree::getNytPath()
+{
+    return this->nytPath;
 }
 bool Tree::isExternalNode(Node *node)
 {
@@ -262,8 +248,4 @@ Node *Tree::getLeft(Node *node)
 Node *Tree::getRight(Node *node)
 {
     return node->right;
-}
-std::string Tree::getNytPath()
-{
-    return this->nytPath;
 }

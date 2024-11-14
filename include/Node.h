@@ -14,20 +14,17 @@ class Node
         int getWeight();
         int getNumber();
 
-        void setMark(char);
-        void setNumber(int);
-        void nodeSwaper(Node *,Node *);
         void incWeight();
         Node *getParent();
         
-        Node *left;
-        Node *right;
-        Node *parent;
+        Node *left{nullptr};
+        Node *right{nullptr};
+        Node *parent{nullptr};
 
     private:
-        int weight;
-        int number;
-        char mark;
+        int weight{0};
+        int number{0};
+        char mark{0};
 };
 
 #endif // NODE_H
