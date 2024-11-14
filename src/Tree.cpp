@@ -96,13 +96,12 @@ bool Tree::updateTree(char mark)
     }
     else
     {
-        findNyt();
+        nytPath = buildPathToNode(NYT);
         addNode(mark,NYT);
         ptr=NYT->parent;
         charAdded=true;
     }
     balanceTree(ptr, root);
-    current=nullptr;
     maxNode=nullptr;
     return charAdded;
 }
@@ -129,12 +128,11 @@ void Tree::switchNodes(Node *lowerNode,Node *higherNode)
     }
     std::swap(lowerNode,higherNode);
 }
-std::string Tree::findNyt()
+std::string Tree::buildPathToNode(Node *target)
 {
-    nytPath="";
-    findPath(NYT);
-    std::reverse(std::begin(nytPath),std::end(nytPath));
-    return nytPath;
+    std::string path, resoult;
+    buildPath(getRoot(), target, path, resoult);
+    return resoult;
 }
 std::string Tree::buildPath(char mark)
 {
@@ -156,21 +154,19 @@ void Tree::buildPath(Node *ptr,char mark, std::string path, std::string &resoult
     buildPath(ptr->left, mark, path + "0", resoult);
     buildPath(ptr->right, mark, path + "1", resoult);
 }
-void Tree::findPath(Node *nyt)
+void Tree::buildPath(Node *ptr, Node *target, std::string path, std::string &resoult)
 {
-    if(nyt->parent)
+    if(ptr == nullptr)
     {
-        if(nyt->parent->left==nyt)
-        {
-            nytPath+="0";
-        }
-        else
-        {
-            nytPath+="1";
-        }
-
-        findPath(nyt->parent);
+        return;
     }
+    if(ptr == target)
+    {
+        resoult = path;
+        return;
+    }
+    buildPath(ptr->left, target, path + "0", resoult);
+    buildPath(ptr->right, target, path + "1", resoult);
 }
 
 std::string Tree::getPathToLastAddedMark()
@@ -228,7 +224,7 @@ Node *Tree::findChar(Node *ptr, char mark)
     auto leftResoult = findChar(ptr->left, mark);
     if(findChar(ptr->left, mark) != nullptr)
     {
-            return leftResoult;
+        return leftResoult;
     }
     return findChar(ptr->right, mark);
 }
